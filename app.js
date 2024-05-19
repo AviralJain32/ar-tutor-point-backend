@@ -7,7 +7,7 @@ import { sendMailForConfirmation } from "./controllers/PaperSubmissionMail.js";
 
 
 const app=express();
-let port = 5000;
+let port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors())
