@@ -24,7 +24,7 @@ export const sendMailForConfirmation = async (req, res) => {
         to: ['adroidjournals@gmail.com',`${email}`], // Change to your recipient
         from: {
             name:`Adroid Publications`,
-            email:`adroidjournals@gmail.com`
+            email:`adroidpublications@gmail.com`
         }, // Change to your verified sender
         subject: 'Adroid Publishing: Your Paper Submission Details',
         html: `
