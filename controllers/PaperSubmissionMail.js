@@ -21,10 +21,10 @@ export const sendMailForConfirmation = async (req, res) => {
 
     // Construct the email message
     const msg = {
-        to: ['adroidpublications@gmail.com',`${email}`], // Change to your recipient
+        to: ['adroidjournals@gmail.com',`${email}`], // Change to your recipient
         from: {
             name:`Adroid Publications`,
-            email:`adroidpublications@gmail.com`
+            email:`adroidjournals@gmail.com`
         }, // Change to your verified sender
         subject: 'Adroid Publishing: Your Paper Submission Details',
         html: `
