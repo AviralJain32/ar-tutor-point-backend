@@ -133,14 +133,14 @@ export const sendMail = async (req, res) => {
 
     // Construct the email message
     const msg = {
-        to: 'adroidjournals@gmail.com', // Change to your recipient
+        to: 'adroidjournal@gmail.com', // Change to your recipient
         from: {
             name:`${name}`,
-            email:`adroidpublications@gmail.com`
+            email:`adroidjournal@gmail.com`
         }, // Change to your verified sender
         subject: 'New Query',
         html: `
-            <p>Hello Adroid Publications Team,</p>
+            <p>Hello Adroid Publishing Team,</p>
             <p>You have received a new query from a user:</p>
             <ul>
                 <li><strong>Name:</strong> ${name}</li>
