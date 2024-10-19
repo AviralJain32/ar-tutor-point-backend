@@ -13,32 +13,40 @@ export const sendCopyrightFormEmail = async (req, res) => {
     const { email, authorName, manuscriptTitle,journalEmail } = req.body; // Access form fields
     const pdfFile = req.file; // Access uploaded file (single file)
 
-    console.log("Form Data:");
-    console.log("Email:", email);
-    console.log("Author Name:", authorName);
-    console.log("Manuscript Title:", manuscriptTitle);
-
-    console.log("Uploaded File Info:", pdfFile);
-
     if (!pdfFile) {
         return res.status(400).json({ message: "No PDF file uploaded!" });
     }
 
     // Read the file and convert to base64 (to send via email)
     const fileContent = fs.readFileSync(pdfFile.path).toString('base64');
-
     const msg = {
         to: [email, `${journalEmail}`],
         from: "adroidpublications@gmail.com", // Replace with your SendGrid verified sender email
         subject: `Signed Journal Publishing Agreement for "${manuscriptTitle}"`,
-        text: `Dear ${authorName},
-        
-        We are pleased to inform you that the signed Journal Publishing Agreement for your manuscript titled "${manuscriptTitle}" has been attached. Please review the agreement and keep a copy for your records.
-    
-    If you have any questions or require further assistance, feel free to reach out.
-    
-    Best regards,
-    Adroid Publications Team`,
+        html: `
+            <div style="font-family: Arial, sans-serif; color: #333;">
+                <h2 style="color: #4CAF50;">Dear ${authorName},</h2>
+                <p>
+                    We are pleased to inform you that the signed <strong>Journal Publishing Agreement</strong> for your manuscript titled 
+                    "<em>${manuscriptTitle}</em>" has been successfully attached to this email.
+                </p>
+                <p>
+                    Please take a moment to review the attached document and ensure that everything is in order. We recommend keeping a copy for your records.
+                </p>
+                <p>
+                    If you have any questions, require clarification, or need further assistance, feel free to reach out to us. We are here to help.
+                </p>
+                <p style="margin-top: 30px;">
+                    Best regards,<br/>
+                    <strong>Adroid Publications Team</strong><br/>
+                    <a href="mailto:adroidpublications@gmail.com" style="color: #4CAF50;">adroidpublications@gmail.com</a>
+                </p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+                <footer style="font-size: 12px; color: #999;">
+                    This email was sent to ${email} regarding your manuscript submission to Adroid Publications. If you believe this email was sent in error, please contact us immediately.
+                </footer>
+            </div>
+        `,
         attachments: [
             {
                 content: fileContent,
@@ -48,7 +56,6 @@ export const sendCopyrightFormEmail = async (req, res) => {
             }
         ]
     };
-    
 
     try {
         await sgMail.send(msg);
