@@ -20,8 +20,7 @@ export const sendCopyrightFormEmailFromAdminPanel = async (req, res) => {
 
     // Construct the email message
     const msg = {
-        //${email}
-        to: `aviral2853@gmail.com`, // Send to recipient's email
+        to: `${email}`, // Send to recipient's email
         from: {
             name: 'Adroid Publishing',
             email: 'adroidjournal@gmail.com'
