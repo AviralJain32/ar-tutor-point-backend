@@ -1,119 +1,3 @@
-
-
-// import nodemailer from "nodemailer";
-
-// export const sendMail = async (req, res) => {
-//     const { name, email, message } = req.body;
-
-//     // Validate the input data
-//     if (!name || !email || !message) {
-//         return res.status(400).json({ error: "Please provide name, email, and message" });
-//     }
-
-//     try {
-//         // var transport = nodemailer.createTransport({
-//         //     host: "sandbox.smtp.mailtrap.io",
-//         //     port: 2525,
-//         //     auth: {
-//         //       user: "5b7c8b884f27fb",
-//         //       pass: "ca4cf2fe7e73b9"
-//         //     }
-//         //   });
-
-//           var transport = nodemailer.createTransport({
-//             host: "live.smtp.mailtrap.io",
-//             port: 587,
-//             auth: {
-//               user: "api",
-//               pass: "79e065d08595a48c188e603751e5bd53"
-//             }
-//           });
-
-//         const mailOptions = {
-//             from: `${name} <${email}>`,
-//             to: "aviral2853@gmail.com",
-//             subject: `Query From AP user: ${name}`,
-//             html: `
-//                 <p>Hello Adroid Publications Team,</p>
-//                 <p>You have received a new query from a user:</p>
-//                 <ul>
-//                     <li><strong>Name:</strong> ${name}</li>
-//                     <li><strong>Email:</strong> ${email}</li>
-//                     <li><strong>Message:</strong></li>
-//                     <p>${message}</p>
-//                 </ul>
-//                 <p>Please respond to this inquiry as soon as possible.</p>
-//                 <p>Thank you.</p>
-//             `
-//         };
-
-//         const mailresponse = await transport.sendMail(mailOptions);
-//         console.log(mailresponse);
-//         return res.status(200).json({ success: "Email sent successfully" });
-//     } catch (error) {
-//         console.error("Error sending email:", error);
-//         return res.status(500).json({ error: "Failed to send email" });
-//     }
-// };
-
-
-
-// import { Resend } from "resend";
-// import Dotenv from 'dotenv';
-
-// Dotenv.config()
-
-// export const sendMail = async (req, res) => {
-//     const { name, email, message } = req.body;
-
-//     // Validate the input data
-//     if (!name || !email || !message) {
-//         return res.status(400).json({ error: "Please provide name, email, and message" });
-//     }
-//     const resend = new Resend(process.env.RESEND_API);
-
-
-//     try {
-//         const { data, error } = await resend.emails.send({
-//             from: "Adroid Publications <onboarding@resend.dev>",
-//             to: ["adroidpublications@gmail.com"],
-//             subject: "hello world",
-//             html: `
-//             <p>Hello Adroid Publications Team,</p>
-//             <p>You have received a new query from a user:</p>
-//             <ul>
-//                 <li><strong>Name:</strong> ${name}</li>
-//                 <li><strong>Email:</strong> ${email}</li>
-//                 <li><strong>Message:</strong></li>
-//                 <p>${message}</p>
-//             </ul>
-//             <p>Please respond to this inquiry as soon as possible.</p>
-//             <p>Thank you.</p>
-//         `,
-//         });
-
-
-//         if (error) {
-//             return res.status(400).json({ error });
-//           }
-        
-//           res.status(200).json({ data });
-//     } 
-//     catch (error) {
-//         console.error("Error sending email:", error);
-//         return res.status(500).json({ error: "Failed to send email" });
-//     }
-// };
-
-
-// <p>Thank you for your submission for consideration in the journal by Adroid Publishing.</p>
-{/* <p>Your submission details as follows:</p>
-<p><strong>Paper ID:</strong></p>
-<p><strong>Paper Title:</strong></p>
-<p>Please use Paper ID regarding any further communication with us.</p>
-<p>Email ID.</p> */}
-
-
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 
@@ -124,10 +8,10 @@ dotenv.config();
 sgMail.setApiKey(process.env.SENDGRID_API);
 
 export const sendMail = async (req, res) => {
-    const { name, email, message } = req.body;
+    const { Class, email, message, name, phone } = req.body;
 
     // Validate the input data
-    if (!name || !email || !message) {
+    if (!name || !email || !message || !Class) {
         return res.status(400).json({ error: "Please provide name, email, and message" });
     }
 
@@ -135,20 +19,39 @@ export const sendMail = async (req, res) => {
     const msg = {
         to: 'adroidjournal@gmail.com', // Change to your recipient
         from: {
-            name:`${name}`,
-            email:`adroidjournal@gmail.com`
+            name: `${name}`,
+            email: `adroidjournal@gmail.com`,
         }, // Change to your verified sender
-        subject: 'New Query',
+        subject: 'New User Query - Action Required',
         html: `
-            <p>Hello Adroid Publishing Team,</p>
-            <p>You have received a new query from a user:</p>
-            <ul>
-                <li><strong>Name:</strong> ${name}</li>
-                <li><strong>Email:</strong> ${email}</li>
-                <li><strong>Message:</strong> ${message}</li>
-            </ul>
-            <p>Please respond to this inquiry as soon as possible.</p>
-            <p>Thank you.</p>
+            <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; background-color: #f9f9f9; border-radius: 8px; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #2e6ccf;">New Query Submission</h2>
+                <p>Hello Adroid Publishing Team,</p>
+                <p>You have received a new query from a user. Below are the details:</p>
+
+                <div style="border-top: 2px solid #2e6ccf; padding-top: 10px;">
+                    <h3 style="color: #2e6ccf;">User Details</h3>
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li><strong style="color: #333;">Name:</strong> ${name}</li>
+                        <li><strong style="color: #333;">Email:</strong> ${email}</li>
+                        <li><strong style="color: #333;">Phone:</strong> ${phone}</li>
+                        <li><strong style="color: #333;">Class:</strong> ${Class}</li>
+                    </ul>
+                </div>
+
+                <div style="border-top: 2px solid #2e6ccf; padding-top: 10px;">
+                    <h3 style="color: #2e6ccf;">Message</h3>
+                    <p style="font-size: 16px; color: #555;">${message}</p>
+                </div>
+
+                <p style="padding-top: 10px;">Please respond to this inquiry as soon as possible. We appreciate your prompt attention to this matter.</p>
+
+                <p style="font-size: 14px; color: #888;">Thank you for your time and support.</p>
+
+                <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
+                    <p style="font-size: 12px; color: #888;">This email was generated automatically, please do not reply to this message directly.</p>
+                </div>
+            </div>
         `,
     };
 

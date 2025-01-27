@@ -1,39 +1,17 @@
 import express from "express"
 import { sendMail } from "./controllers/sendMail.js";
 import cors from "cors"
-import { configDotenv } from "dotenv";
-import { sendMailForConfirmation } from "./controllers/PaperSubmissionMail.js";
-import { sendCopyrightFormEmail } from "./controllers/sendCopyrightFormMail.js";
-import multer from "multer";
-import { sendCopyrightFormEmailFromAdminPanel } from "./controllers/sendCopyrightFormEmailFromAdminPanel.js";
-
-
+import LinksRouter from "./routes/UploadLinks.routes.js"
 const app=express();
-let port = process.env.PORT || 5000;
-const upload = multer({ dest: 'uploads/' });
 
 app.use(express.json());
-app.use(cors())
-app.get("/",(req,res)=>{
-    res.send("I am server");
-})
+app.use(express.urlencoded({extended:true,limit:"16kb"}))//url mai special characters ko ecoded hote hai toh unhe sambhalta hai
+app.use(cors({
+    origin:process.env.FRONTEND_URL
+}))
 
+
+app.use("/api/v1/",LinksRouter) //yaha app.get nhi aayega
 app.post("/sendemail",sendMail)  
-app.post("/paperSubmission",sendMailForConfirmation)
 
-
-app.post("/sendCopyrightFormEmail",upload.single('pdfFile'),sendCopyrightFormEmail)
-
-app.post("/sendCopyrightFormEmailFromAdminPanel",sendCopyrightFormEmailFromAdminPanel)
-
-
-const start=async()=>{
-    try {
-        app.listen(port,()=>{
-            console.log(`server is started in port ${port}`);
-        })
-    } catch (error) {
-        console.log("error in running"+error);
-    }
-}
-start();
+export {app}
