@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import { app } from "./app.js";
 import connectDB from "./db/dbConnection.js";
 
-const port=process.env.PORT || 8000
+let port=3000
 
 dotenv.config({
     path:"./.env"
